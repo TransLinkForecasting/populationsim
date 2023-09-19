@@ -248,7 +248,7 @@ def try_simul_integerizing(
         logger.info("restoring %s zero weight rows" % zero_weight_rows.sum())
         integerized_weights = \
             pd.DataFrame(data=np.zeros(
-                sub_weights.shape, dtype=np.int),
+                sub_weights.shape, dtype=int),
                 columns=sub_weights.columns,
                 index=sub_weights.index)
         integerized_weights.update(integerizer.integerized_weights)
