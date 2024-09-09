@@ -75,15 +75,15 @@ def expand_households():
         for group_id, df in grouper:
             hh_ids = list(df[household_id_col])
             probs = list(df.sample_weight / df.sample_weight.sum())
-            group_hh_probs[group_id] = [hh_ids, probs]
+            group_hh_probs[int(group_id)] = [hh_ids, probs]
 
         # get a repeatable random number sequence generator for consistent choice results
         prng = pipeline.get_rn_generator().get_external_rng('expand_households')
 
         # now make a hh_id choice for each group_id in expanded_weights
         def chooser(group_id):
-            hh_ids = group_hh_probs[group_id][HH_IDS]
-            hh_probs = group_hh_probs[group_id][HH_PROBS]
+            hh_ids = group_hh_probs[int(group_id)][HH_IDS]
+            hh_probs = group_hh_probs[int(group_id)][HH_PROBS]
             return prng.choice(hh_ids, p=hh_probs)
         expanded_weights[household_id_col] = \
             expanded_weights.group_id.apply(chooser, convert_dtype=True,)
